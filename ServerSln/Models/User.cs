@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ServerSln
+﻿namespace ServerSln
 {
     internal class User
     {
@@ -10,5 +8,13 @@ namespace ServerSln
         public string? Password { get; set; }
 
         public State? State { get; set; }
+
+        public User(int? id, string? name, string? password, State? state)
+        {
+            Id = id;
+            Name = name;
+            Password = password;
+            State = state;
+        }
     }
 }
