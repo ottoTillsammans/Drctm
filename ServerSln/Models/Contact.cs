@@ -1,6 +1,6 @@
 ﻿namespace ServerSln   
 {
-    internal class Contact
+    public class Contact
     {
         public int? UserId { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿namespace ServerSln
 {
-    internal enum State
+    public enum State
     {
         Online,
         Offline

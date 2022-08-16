@@ -1,6 +1,6 @@
 ﻿namespace ServerSln
 {
-    internal class Message
+    public class Message
     {
         public int? UserId { get; set; }
 
