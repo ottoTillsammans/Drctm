@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace ServerSln.Repos
@@ -8,11 +7,19 @@ namespace ServerSln.Repos
     {
         private readonly DbSet<User> dbSet;
         private readonly DbContext context;
+        private static UserRepository instance;
 
-        public UserRepository(DbContext dbContext)
+        private UserRepository(DbContext dbContext)
         {
             context = dbContext;
             dbSet = dbContext.Set<User>();
+        }
+
+        public static UserRepository GetInstance(DbContext dbContext)
+        {
+            if (instance == null)
+                instance = new UserRepository(dbContext);
+            return instance;
         }
 
         public User GetById(int id)
