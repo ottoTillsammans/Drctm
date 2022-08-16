@@ -1,4 +1,4 @@
-﻿namespace ServerSln   
+﻿namespace ServerSln  
 {
     public class Contact
     {

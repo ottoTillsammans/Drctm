@@ -1,18 +1,19 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
-namespace ServerSln.Repos
+namespace ServerSln
 {
     public class UserRepository
     {
         private readonly DbSet<User> dbSet;
-        private readonly DbContext context;
+        private readonly DbContext dbContext;
         private static UserRepository instance;
 
-        private UserRepository(DbContext dbContext)
+        private UserRepository(DbContext externalContext)
         {
-            context = dbContext;
-            dbSet = dbContext.Set<User>();
+            dbContext = externalContext;
+            dbSet = externalContext.Set<User>();
         }
 
         public static UserRepository GetInstance(DbContext dbContext)
@@ -44,7 +45,7 @@ namespace ServerSln.Repos
             var info = dbSet.Add(user);
             var userId = info.Entity.Id;
 
-            int numberOfWritten = context.SaveChanges();
+            int numberOfWritten = dbContext.SaveChanges();
 
             return numberOfWritten == 0 || userId == null ? 0 : userId.Value;
         }
@@ -60,9 +61,9 @@ namespace ServerSln.Repos
                 user.Password = password;
                 user.State = state;
 
-                numberOfUpdated = context.SaveChanges();
+                numberOfUpdated = dbContext.SaveChanges();
             }
-            return numberOfUpdated == 0 ? false : true;
+            return numberOfUpdated > 0;
         }
     }
 }

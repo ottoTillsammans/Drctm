@@ -1,18 +1,19 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
-namespace ServerSln.Repos
+namespace ServerSln
 {
     public class MessageRepository
     {
         private readonly DbSet<Message> dbSet;
-        private readonly DbContext context;
+        private readonly DbContext dbContext;
         private static MessageRepository instance;
 
-        private MessageRepository(DbContext dbContext)
+        private MessageRepository(DbContext externalContext)
         {
-            context = dbContext;
-            dbSet = dbContext.Set<Message>();
+            dbContext = externalContext;
+            dbSet = externalContext.Set<Message>();
         }
 
         public static MessageRepository GetInstance(DbContext dbContext)
@@ -40,7 +41,7 @@ namespace ServerSln.Repos
 
             dbSet.Add(message);
 
-            int numberOfWritten = context.SaveChanges();
+            int numberOfWritten = dbContext.SaveChanges();
 
             return numberOfWritten > 0;
         }
