@@ -7,7 +7,7 @@ namespace ServerSln.Repos
     {
         private readonly DbSet<Message> dbSet;
         private readonly DbContext context;
-        static MessageRepository instance;
+        private static MessageRepository instance;
 
         private MessageRepository(DbContext dbContext)
         {
