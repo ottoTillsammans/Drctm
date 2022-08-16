@@ -24,12 +24,12 @@ namespace ServerSln.Repos
 
         public IQueryable<Message> GetAllByUserId(int id)
         {
-            return dbSet.Where(m => m.UserId == id);
+            return dbSet == null ? null : dbSet.Where(m => m.UserId == id);
         }
 
         public Message GetBySubstring(string substring)
         {
-            return dbSet
+            return dbSet == null ? null : dbSet
                 .Where(m => m.Content != null && m.Content.Contains(substring))
                 .FirstOrDefault();
         }
@@ -37,10 +37,10 @@ namespace ServerSln.Repos
         public bool Create(int? userId, int? contactId, DateTime? sendTime, DateTime? deliveryTime, string? content)
         {
             Message message = new Message(userId, contactId, sendTime, deliveryTime, content);
-            
+
             dbSet.Add(message);
 
-            var numberOfWritten = context.SaveChanges();
+            int numberOfWritten = context.SaveChanges();
 
             return numberOfWritten > 0;
         }
