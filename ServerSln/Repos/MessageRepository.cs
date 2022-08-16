@@ -58,7 +58,7 @@ namespace ServerSln
         /// <param name="sendTime">Date of sending.</param>
         /// <param name="deliveryTime">Date of delivering.</param>
         /// <param name="content">Text of message.</param>
-        /// <returns></returns>
+        /// <returns>True if created successfully, otherwise false.</returns>
         public bool Create(int userId, int contactId, DateTime sendTime, DateTime deliveryTime, string content)
         {
             Message message = new Message(userId, contactId, sendTime, deliveryTime, content);
