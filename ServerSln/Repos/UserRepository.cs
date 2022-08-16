@@ -30,14 +30,8 @@ namespace ServerSln.Repos
             return dbSet.Where(u => u.Name == name);
         }
 
-        public int Create(int id, string name, string password, State state)
+        public int Create(string name, string password, State state)
         {
-            int? maxId = dbSet.Select(u => u.Id).Max();
-            int currId = 1;
-
-            if (maxId.HasValue)
-                currId = maxId.Value + 1;
-
             User user = new User(name, password, state);
 
             var info = dbSet.Add(user);
