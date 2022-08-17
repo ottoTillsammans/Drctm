@@ -6,7 +6,7 @@ namespace ServerSln
     {
         private readonly DbSet<Message> dbSet;
         private readonly DbContext dbContext;
-        private static MessageRepository instance;
+        private static MessageRepository? instance;
 
         private MessageRepository(DbContext externalContext)
         {
@@ -32,9 +32,9 @@ namespace ServerSln
         /// </summary>
         /// <param name="id">Users's id.</param>
         /// <returns>Messages.</returns>
-        public IQueryable<Message> GetAllByUserId(int id)
+        public IQueryable<Message>? GetAllByUserId(int id)
         {
-            return dbSet == null ? null : dbSet.Where(m => m.UserId == id);
+            return dbSet?.Where(m => m.UserId == id);
         }
 
         /// <summary>
@@ -43,9 +43,9 @@ namespace ServerSln
         /// </summary>
         /// <param name="substring">The substring of a message.</param>
         /// <returns>Message.</returns>
-        public Message GetBySubstring(string substring)
+        public Message? GetBySubstring(string substring)
         {
-            return dbSet == null ? null : dbSet
+            return dbSet?
                 .Where(m => m.Content != null && m.Content.Contains(substring))
                 .FirstOrDefault();
         }

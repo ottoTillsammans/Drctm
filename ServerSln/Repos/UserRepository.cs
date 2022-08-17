@@ -6,7 +6,7 @@ namespace ServerSln
     {
         private readonly DbSet<User> dbSet;
         private readonly DbContext dbContext;
-        private static UserRepository instance;
+        private static UserRepository? instance;
 
         private UserRepository(DbContext externalContext)
         {
@@ -32,9 +32,9 @@ namespace ServerSln
         /// </summary>
         /// <param name="id">User's id.</param>
         /// <returns>User.</returns>
-        public User GetById(int id)
+        public User? GetById(int id)
         {
-            return dbSet == null ? null : dbSet.FirstOrDefault(u => u.Id.Value == id);
+            return dbSet?.FirstOrDefault(u => u.Id == id);
         }
 
         /// <summary>
@@ -43,9 +43,9 @@ namespace ServerSln
         /// </summary>
         /// <param name="name">User's name.</param>
         /// <returns>User.</returns>
-        public User GetByName(string name)
+        public User? GetByName(string name)
         {
-            return dbSet == null ? null : dbSet.FirstOrDefault(u => u.Name == name);
+            return dbSet?.FirstOrDefault(u => u.Name == name);
         }
 
         /// <summary>
@@ -54,9 +54,9 @@ namespace ServerSln
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public IQueryable<User> GetAllByName(string name)
+        public IQueryable<User>? GetAllByName(string name)
         {
-            return dbSet == null ? null : dbSet.Where(u => u.Name == name);
+            return dbSet?.Where(u => u.Name == name);
         }
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace ServerSln
 
             int numberOfWritten = dbContext.SaveChanges();
 
-            return numberOfWritten == 0 || userId == null ? 0 : userId.Value;
+            return userId;
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace ServerSln
         /// <returns>True if updated successfully, otherwise false.</returns>
         public bool Update(int id, string name, string password, State state)
         {
-            User user = dbSet.FirstOrDefault(u => u.Id == id);
+            User? user = dbSet?.FirstOrDefault(u => u.Id == id);
             int numberOfUpdated = 0;
 
             if (user != null)

@@ -6,7 +6,7 @@ namespace ServerSln
     {
         private readonly DbSet<Contact> dbSet;
         private readonly DbContext dbContext;
-        private static ContactRepository instance;
+        private static ContactRepository? instance;
 
         private ContactRepository(DbContext externalContext)
         {
@@ -32,9 +32,11 @@ namespace ServerSln
         /// </summary>
         /// <param name="id">User's id.</param>
         /// <returns>Contact.</returns>
-        public Contact GetContact(int id)
+        public Contact? GetContact(int id)
         {
-            return dbSet == null ? null : dbSet.FirstOrDefault(c => c.ContactId == id);
+            return dbSet?.FirstOrDefault(c =>
+            c.ContactId.HasValue &&
+            c.ContactId.Value == id);
         }
 
         /// <summary>
@@ -43,9 +45,11 @@ namespace ServerSln
         /// </summary>
         /// <param name="id">User's id.</param>
         /// <returns>List of user's contacts.</returns>
-        public IQueryable<Contact> GetUserContasts(int id)
+        public IQueryable<Contact>? GetUserContasts(int id)
         {
-            return dbSet == null ? null : dbSet.Where(c => c.UserId == id);
+            return dbSet?.Where(c =>
+            c.UserId.HasValue &&
+            c.UserId.Value == id);
         }
 
         /// <summary>
@@ -55,20 +59,20 @@ namespace ServerSln
         /// <param name="id">User's id.</param>
         /// <param name="name">Name of wanted contact.</param>
         /// <returns></returns>
-        public Contact GetContactByName(int id, string name)
+        public Contact? GetContactByName(int id, string name)
         {
-            if (dbSet == null)
-                return null;
-
-            User user = dbSet
-                .Where(c => c.UserId == id)
+            User? user = dbSet?
+                .Where(c => c.UserId.HasValue && c.UserId.Value == id)
                 .Select(c => UserRepository.GetInstance(dbContext).GetById(c.ContactId.Value))
                 .Where(u => u.Name == name)
                 .FirstOrDefault();
 
-            return dbSet
-                .Where(c => c.ContactId == user.Id)
-                .FirstOrDefault();
+            if (user != null)
+                return dbSet?
+                    .Where(c => c.ContactId.HasValue && c.ContactId.Value == user.Id)
+                    .FirstOrDefault();
+            else
+                return null;
         }
 
         /// <summary>
@@ -79,11 +83,10 @@ namespace ServerSln
         /// <returns>True if successfully added, otherwise false.</returns>
         public bool AddInUserContacts(int userId, int contactId)
         {
-            User user = UserRepository.GetInstance(dbContext).GetById(userId);
             Contact contact = new Contact(userId, contactId, DateTime.MinValue);
 
             dbSet.Add(contact);
-            
+
             int numberOfWritten = dbContext.SaveChanges();
 
             return numberOfWritten > 0;
@@ -98,7 +101,10 @@ namespace ServerSln
         /// <returns>True if successfully updated, otherwise false.</returns>
         public bool Update(int userId, int contactId, DateTime lastUpdateTime)
         {
-            Contact contact = dbSet.Where(c => c.ContactId.Value == contactId).FirstOrDefault();
+            Contact? contact = dbSet?
+                .Where(c => c.ContactId.HasValue && c.ContactId.Value == contactId)
+                .FirstOrDefault();
+            
             int numberOfUpdated = 0;
 
             if (contact != null)
@@ -115,16 +121,20 @@ namespace ServerSln
         /// Delete the contact.
         /// </summary>
         /// <param name="id">Id of deleting contact.</param>
-        public void Delete(int id)
+        /// <returns>True if successfully deleted, otherwise false.</returns>
+        public bool Delete(int id)
         {
-            if (dbSet == null)
-                return;
-            
-            Contact contact = dbSet
-                .Where(c => c.ContactId == id)
+            Contact? contact = dbSet?
+                .Where(c => c.ContactId.HasValue && c.ContactId.Value == id)
                 .FirstOrDefault();
 
-            dbSet.Remove(contact);
+            if (contact != null)
+            {
+                dbSet?.Remove(contact);
+                return true;
+            }
+            else
+                return false;
         }
     }
 }
