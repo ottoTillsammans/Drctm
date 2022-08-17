@@ -157,7 +157,8 @@ namespace ServerSln
                 Console.WriteLine(m.Content);
                 Console.WriteLine();
             }
-
+            Console.WriteLine("_________________________\n");
+            
             Console.ReadKey();
 
             #endregion
