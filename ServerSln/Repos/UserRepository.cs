@@ -45,7 +45,7 @@ namespace ServerSln
         /// <returns>User.</returns>
         public User? GetByName(string name)
         {
-            return dbSet?.FirstOrDefault(u => u.Name != null && u.Name.Contains(name));
+            return dbSet?.FirstOrDefault(u => u.Name == name);
         }
 
         /// <summary>
