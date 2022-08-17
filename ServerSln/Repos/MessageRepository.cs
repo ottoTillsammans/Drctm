@@ -37,17 +37,21 @@ namespace ServerSln
             return dbSet?.Where(m => m.UserId == id);
         }
 
+
         /// <summary>
-        /// Get message by it's substring.
+        /// Get messages of user by it's substring.
         /// or null if there is no connection to DB.
         /// </summary>
-        /// <param name="substring">The substring of a message.</param>
-        /// <returns>Message.</returns>
-        public Message? GetBySubstring(string substring)
+        /// <param name="id">User's id.</param>
+        /// <param name="substring">Substring to find message.</param>
+        /// <returns>Suitable messages.</returns>
+        public IQueryable<Message>? GetBySubstring(int id, string substring)
         {
             return dbSet?
-                .Where(m => m.Content != null && m.Content.Contains(substring))
-                .FirstOrDefault();
+                .Where(m =>
+                m.UserId == id &&
+                m.Content != null &&
+                m.Content.Contains(substring));
         }
 
         /// <summary>

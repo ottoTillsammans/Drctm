@@ -131,6 +131,7 @@ namespace ServerSln
             if (contact != null)
             {
                 dbSet?.Remove(contact);
+                dbContext.SaveChanges();
                 return true;
             }
             else
