@@ -25,7 +25,7 @@ namespace Client
                     }
                     catch (Exception ex)
                     {
-
+                        // Exception handling.
                     }
                 }
             }
