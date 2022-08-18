@@ -1,16 +1,40 @@
-﻿namespace Client
-{
-    public class Tag
-    {
-        private string Name { get; set; }
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
-        public Tag(string name)
+namespace Client
+{
+    public static class Tag
+    {
+        private static Dictionary<string, string> Tags = new Dictionary<string, string>();
+
+        public static string GetTag(string type)
         {
-            Name = name;
+            return Tags
+                .Select(t => t.Key == type)
+                .Any() ? Tags[type] : String.Empty;
         }
 
-        public string Open() => string.Format("<{0}>", Name);
+        public static void AddTag(string type, string tag)
+        {
+            if (!Tags.Select(t => t.Key == type).Any())
+                Tags.Add(type, tag);
+        }
 
-        public string Close() => string.Format("</{0}>", Name);
+        public static string Opening(this string name) => string.Format("<{0}>", name);
+
+        public static string Closing(this string name) => string.Format("</{0}>", name);
+
+        public static string AddAttribute(this string element, string attrName, string attrValue)
+        {
+            string result = element;
+
+            if (!string.IsNullOrWhiteSpace(element) &&
+                !string.IsNullOrWhiteSpace(attrName) &&
+                !string.IsNullOrWhiteSpace(attrValue))
+                result = element.Insert(element.Length - 1, string.Format(" {0}=\"{1}\"", attrName, attrValue));
+
+            return result;
+        }
     }
 }
