@@ -19,6 +19,8 @@ namespace ServerSln
 
             #region Tests.
 
+            #region UserRepository tests.
+
             userRepository.Create("Иван Иванов", "1234567890", State.Offline);
             userRepository.Create("Анна Поздеева", "1Qwerty?", State.Online);
             userRepository.Create("Илон Маск", "%^$^*@&*%0", State.Offline);
@@ -79,6 +81,10 @@ namespace ServerSln
             Console.WriteLine(user.Id);
             Console.WriteLine("_________________________\n");
 
+            #endregion
+
+            #region ContactRepository tests.
+
             Console.WriteLine("Добавление нового контакта в список контактов пользователя Id 2:\n");
 
             var success1 = contactRepository.AddInUserContacts(2, 1);
@@ -120,6 +126,10 @@ namespace ServerSln
             }
             Console.WriteLine("_________________________\n");
 
+            #endregion
+
+            #region MessageRepository tests.
+
             Console.WriteLine("Получение списка сообщений пользователя Id 1:\n");
 
             messageRepository.Create(1, 2, DateTime.Now, DateTime.Now, "Привет!");
@@ -160,6 +170,8 @@ namespace ServerSln
             Console.WriteLine("_________________________\n");
             
             Console.ReadKey();
+
+            #endregion
 
             #endregion
 
