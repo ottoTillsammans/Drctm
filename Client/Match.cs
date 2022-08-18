@@ -10,12 +10,15 @@ namespace Client
 
         public static string GetTag(string type)
         {
-            return Tags[type];
+            return Tags
+                .Select(t => t.Key == type)
+                .Any() ? Tags[type] : String.Empty;
         }
 
         public static void SetTag(string type, string tag)
         {
-            Tags[type] = tag;
+            if (!Tags.Select(t => t.Key == type).Any())
+                Tags.Add(type, tag);
         }
     }
 }
