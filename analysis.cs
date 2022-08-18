@@ -1,3 +1,5 @@
+// Исходная функция.
+
 static string Func1(string input, string elementName, string attrName)
 {
     string[] lines = System.IO.File.ReadAllLines(input); // Необходима провека пути на null; существование и доступность. Стоит добавить обработку исключений. 
@@ -32,6 +34,8 @@ static string Func1(string input, string elementName, string attrName)
 
     return result;
 }
+
+// Доработанная функция.
 
 static string Func2(string input, string elementName, string attrName)
 {
