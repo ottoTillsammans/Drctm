@@ -21,9 +21,9 @@ namespace Client
                 Tags.Add(type, tag);
         }
 
-        public static string Opening(this string name) => string.Format("<{0}>", name);
+        public static string MakeOpeningTag(this string name) => string.Format("<{0}>", name);
 
-        public static string Closing(this string name) => string.Format("</{0}>", name);
+        public static string MakeClosingTag(this string name) => string.Format("</{0}>", name);
 
         public static string AddAttribute(this string element, string attrName, string attrValue)
         {
@@ -35,6 +35,14 @@ namespace Client
                 result = element.Insert(element.Length - 1, string.Format(" {0}=\"{1}\"", attrName, attrValue));
 
             return result;
+        }
+
+        public static string AddHtmlTag(this string document)
+        {
+            string opening = "<html>";
+            string closing = "</html>";
+            
+            return string.Format("{0}\n{1}\n{2}", opening, document, closing);
         }
     }
 }
